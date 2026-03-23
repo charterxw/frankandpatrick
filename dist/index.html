@@ -36,53 +36,64 @@
 </script>
 
 <style>
-  /* 1. 强制最外层容器不产生任何间距 */
-  #root, body, html {
+  /* 1. 消除所有默认间距，确保容器背景色一致 */
+  html, body, #root {
     margin: 0 !important;
     padding: 0 !important;
-    overflow-x: hidden;
+    height: 100vh !important;
+    background-color: #fffaf0 !important; /* 设置为你网页的主色调，防止缝隙显现 */
   }
 
-  /* 2. 定位两个目标 Section，强制它们平分或按比例占满 100vh */
-  section#PB7TyQ7htGfkPYLp {
+  /* 2. 第一个 Section：固定 20% 高度 */
+  section#PB2rPCzYzz5YYZQM {
     height: 20vh !important;
     min-height: 20vh !important;
     max-height: 20vh !important;
-    overflow: hidden !important;
     position: relative !important;
+    z-index: 2; /* 放在上层 */
+    overflow: hidden !important;
   }
 
+  /* 3. 第二个 Section：填满剩余 80% 并补齐间隙 */
   section#PBClDQPrWS06hXbc {
     height: 80vh !important;
     min-height: 80vh !important;
-    max-height: 80vh !important;
-    overflow: hidden !important;
+    /* 解决细边的核心：高度多加 1px，并向上微移 1px 覆盖接缝 */
+    margin-top: -1px !important; 
+    height: calc(80vh + 1px) !important;
     position: relative !important;
+    z-index: 1;
+    overflow: hidden !important;
   }
 
-  /* 3. 核心突破：强制关闭 Canva 的 JavaScript 缩放转换 */
-  /* 我们要针对 section 下面的直接子 div 也就是你提到的那个 rGeu6w 相关容器 */
-  #PB7TyQ7htGfkPYLp > div, 
+  /* 4. 强制 Canva 内部容器彻底填满 */
+  #PB2rPCzYzz5YYZQM > div, 
   #PBClDQPrWS06hXbc > div {
-    height: 100% !important;
-    width: 100% !important;
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
-    /* 关键：强制还原缩放比例为 1，不让它被 JS 放大 */
-    transform: scale(1) !important; 
-    transform-origin: center top !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: scale(1) !important; /* 禁用 Canva 的自动缩放 */
     
-    /* 4. 使用 Flex 布局让里面的文字/图片在新的高度内居中 */
+    /* 内容居中 */
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
   }
 
-  /* 5. 针对第二个 section 里的 Schedule 内容，如果内容太多，允许它在 80vh 内部滚动 */
+  /* 5. 确保背景图/形状铺满，不留白边 */
+  .rGeu6w, .rGeu6w div {
+    background-size: cover !important;
+    box-shadow: none !important; /* 移除可能产生的阴影边框 */
+    border: none !important;
+  }
+
+  /* 针对第二个 Section 里的具体 Schedule 内容增加滚动支持（如果字太多） */
   #PBClDQPrWS06hXbc > div {
-    overflow-y: auto !important; 
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
 </style>
 
