@@ -36,61 +36,49 @@
 </script>
 
 <style>
-  /* 1. 消除所有默认间距，确保容器背景色一致 */
-  html, body, #root {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 100vh !important;
-    background-color: #fffaf0 !important; /* 设置为你网页的主色调，防止缝隙显现 */
+  /* 1. 消除页面可能的默认边距计算误差 */
+  * {
+    box-sizing: border-box;
   }
 
-  /* 2. 第一个 Section：固定 20% 高度 */
-  section#PB2rPCzYzz5YYZQM {
+  /* 2. 强制第一个 Section 占屏幕的 20% */
+  #PB7TyQ7htGfkPYLp {
     height: 20vh !important;
     min-height: 20vh !important;
     max-height: 20vh !important;
+    overflow: hidden !important; /* 核心：防止内部内容把外面撑高 */
     position: relative !important;
-    z-index: 2; /* 放在上层 */
-    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* 3. 第二个 Section：填满剩余 80% 并补齐间隙 */
-  section#PBClDQPrWS06hXbc {
-    height: 80vh !important;
-    min-height: 80vh !important;
-    /* 解决细边的核心：高度多加 1px，并向上微移 1px 覆盖接缝 */
-    margin-top: -1px !important; 
+  /* 3. 强制第二个 Section 占屏幕的 80% */
+  #PBClDQPrWS06hXbc {
+    /* 使用 calc(80vh + 1px) 和 margin-top 解决你说的“细边”缝隙问题 */
     height: calc(80vh + 1px) !important;
+    min-height: calc(80vh + 1px) !important;
+    max-height: calc(80vh + 1px) !important;
+    margin-top: -1px !important; 
+    overflow: hidden !important; /* 核心：防止内部内容把外面撑高 */
     position: relative !important;
-    z-index: 1;
-    overflow: hidden !important;
+    padding: 0 !important;
   }
 
-  /* 4. 强制 Canva 内部容器彻底填满 */
-  #PB2rPCzYzz5YYZQM > div, 
+  /* 4. 关键修正：让 Canva 内部的容器高度完全服从父级高度 */
+  #PB7TyQ7htGfkPYLp > div, 
   #PBClDQPrWS06hXbc > div {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
     height: 100% !important;
-    transform: scale(1) !important; /* 禁用 Canva 的自动缩放 */
-    
-    /* 内容居中 */
+    min-height: 100% !important;
+    max-height: 100% !important;
+    /* 保持 Canva 的缩放逻辑，但限制在固定高度内 */
     display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
     align-items: center !important;
+    justify-content: center !important;
+    transform-origin: center top !important;
   }
 
-  /* 5. 确保背景图/形状铺满，不留白边 */
-  .rGeu6w, .rGeu6w div {
-    background-size: cover !important;
-    box-shadow: none !important; /* 移除可能产生的阴影边框 */
-    border: none !important;
-  }
-
-  /* 针对第二个 Section 里的具体 Schedule 内容增加滚动支持（如果字太多） */
+  /* 如果第二个 Section (Schedule) 的内容在手机上实在太长放不下 */
+  /* 下面这行会让它在 80% 的区域内可以滑动看文字，而不会撑开整个网页 */
   #PBClDQPrWS06hXbc > div {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
