@@ -36,52 +36,51 @@
 </script>
 
 <style>
-  /* 1. 消除页面可能的默认边距计算误差 */
-  * {
-    box-sizing: border-box;
+  /* 1. 将网页背景色设为与第二个 Section 一致的深棕色 */
+  /* 这样即使有 0.1 像素的缝隙，看到的也是棕色，视觉上就消除了线 */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #553f2d !important; /* 这里的颜色要和你 Section 2 的棕色一致 */
   }
 
-  /* 2. 强制第一个 Section 占屏幕的 20% */
+  /* 2. 第一个 Section (20%) */
   #PB7TyQ7htGfkPYLp {
     height: 20vh !important;
     min-height: 20vh !important;
     max-height: 20vh !important;
-    overflow: hidden !important; /* 核心：防止内部内容把外面撑高 */
+    overflow: hidden !important;
     position: relative !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    z-index: 2;
   }
 
-  /* 3. 强制第二个 Section 占屏幕的 80% */
+  /* 3. 第二个 Section (80% + 容错余量) */
   #PBClDQPrWS06hXbc {
-    /* 使用 calc(80vh + 1px) 和 margin-top 解决你说的“细边”缝隙问题 */
-    height: calc(80vh + 1px) !important;
-    min-height: calc(80vh + 1px) !important;
-    max-height: calc(80vh + 1px) !important;
+    /* 核心修复：高度增加 2px 确保盖过屏幕底边，margin-top -1px 盖住中间缝隙 */
+    height: calc(80vh + 2px) !important;
+    min-height: calc(80vh + 2px) !important;
+    max-height: calc(80vh + 2px) !important;
     margin-top: -1px !important; 
-    overflow: hidden !important; /* 核心：防止内部内容把外面撑高 */
     position: relative !important;
-    padding: 0 !important;
+    z-index: 1;
+    overflow: hidden !important;
   }
 
-  /* 4. 关键修正：让 Canva 内部的容器高度完全服从父级高度 */
+  /* 4. 强制 Canva 内部容器对齐 */
   #PB7TyQ7htGfkPYLp > div, 
   #PBClDQPrWS06hXbc > div {
     height: 100% !important;
-    min-height: 100% !important;
-    max-height: 100% !important;
-    /* 保持 Canva 的缩放逻辑，但限制在固定高度内 */
+    width: 100% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    transform-origin: center top !important;
   }
 
-  /* 如果第二个 Section (Schedule) 的内容在手机上实在太长放不下 */
-  /* 下面这行会让它在 80% 的区域内可以滑动看文字，而不会撑开整个网页 */
-  #PBClDQPrWS06hXbc > div {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
+  /* 针对 Canva 导出的背景层做特殊处理，确保背景图铺满那多出来的 2px */
+  #PBClDQPrWS06hXbc div[style*="backgroundColor"], 
+  #PBClDQPrWS06hXbc .rGeu6w {
+    height: 100% !important;
+    background-size: cover !important;
   }
 </style>
 
